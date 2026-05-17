@@ -1,0 +1,9 @@
+body {
+    &.ne0heretic-firewall .ibexa-main-container__side-column .ibexa-sticky-container .btn {
+        white-space: nowrap;
+        text-align: left;
+    }
+    &.ibexa-prevent-click, body.ibexa-prevent-click * {
+        pointer-events: auto !important;
+    }
+}

@@ -1,0 +1,46 @@
+{# See vendor/ibexa/ibexa-admin-ui/src/bundle/Resources/views/themes/admin/ui/layout.html.twig #}
+
+{% extends '@ibexadesign/ui/layout.html.twig' %}
+
+{% block body_class %}ne0heretic-firewall{% endblock %}
+
+{% block title %}{{ title|trans }}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('ne0heretic-admin', null, 'ibexa') }}
+{%- endblock -%}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('ne0heretic-admin', null, 'ibexa') }}
+{% endblock %}
+
+{% block left_sidebar %}
+    {% include '@ibexadesign/ne0heretic/parts/left_menu.html.twig' %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        {% for item in path_items %}
+            <li class="breadcrumb-item{% if loop.last %} active{% endif %}">
+                {% if item.url is defined %}
+                    <a class="breadcrumb-item__link" href="{{ item.url }}">{{ item.value }}</a>
+                {% else %}
+                    {{ item.value }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ol>
+{% endblock %}
+
+{%- block content -%}
+    <div class="row align-items-stretch ibexa-main-row">
+        <div class="px-0 pb-4 ibexa-content-container">
+            {% block page_content %}{% endblock %}
+        </div>
+    </div>
+    <script>
+        window.ne0heretic_root = "{{ path('ne0heretic_firewall.dashboard')|replace({"/ne0heretic_firewall": ""}) }}";
+    </script>
+{%- endblock -%}

@@ -1,0 +1,2 @@
+ne0heretic_firewall:
+    resource: '@Ne0HereticFirewallBundle/Resources/config/routing.yaml'

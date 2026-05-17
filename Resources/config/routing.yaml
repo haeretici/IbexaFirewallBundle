@@ -1,0 +1,23 @@
+ne0heretic_firewall.dashboard:
+    path: /ne0heretic_firewall
+    defaults:
+        _controller: Ne0Heretic\FirewallBundle\Controller\AdminController::dashboardAction
+    options:
+        expose: true
+
+ne0heretic_firewall.metrics:
+    path: /ne0heretic_firewall/metrics
+    defaults:
+        _controller: Ne0Heretic\FirewallBundle\Controller\AdminController::getMetricsAction
+    options:
+        expose: true
+    requirements:
+        _method: GET
+
+ne0heretic_firewall.settings:
+    path: /ne0heretic_firewall/settings
+    defaults:
+        _controller: Ne0Heretic\FirewallBundle\Controller\AdminController::settingsAction
+    options:
+        expose: true
+
