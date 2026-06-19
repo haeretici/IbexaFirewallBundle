@@ -1,0 +1,47 @@
+body {
+    &.ibexa-prevent-click, body.ibexa-prevent-click * {
+        pointer-events: auto !important;
+    }
+}
+
+.haeretici-settings {
+    &-paths {
+        font-size: 0.875rem;
+        line-height: 1.5;
+        min-height: 10rem;
+        resize: vertical;
+    }
+
+    &-actions {
+        position: sticky;
+        bottom: 1rem;
+        z-index: 1020;
+    }
+
+    .form-check-input[role='switch'] {
+        cursor: pointer;
+    }
+
+    .list-group-item {
+        transition: background-color 0.15s ease-in-out;
+
+        &:hover {
+            background-color: var(--bs-tertiary-bg);
+        }
+    }
+
+    .input-group-text {
+        min-width: 3.25rem;
+        justify-content: center;
+        font-size: 0.8125rem;
+        color: var(--bs-secondary-color);
+    }
+
+    .form-floating > .form-control {
+        min-height: calc(3.25rem + calc(var(--bs-border-width) * 2));
+    }
+
+    code {
+        font-size: 0.875em;
+    }
+}

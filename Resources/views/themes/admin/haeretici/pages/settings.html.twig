@@ -1,0 +1,193 @@
+{% extends '@ibexadesign/haeretici/layout.html.twig' %}
+{% import '@ibexadesign/haeretici/form/settings_macros.html.twig' as fields %}
+
+{% block breadcrumbs %}
+    {% include '@ibexadesign/ui/breadcrumbs.html.twig' with { items: breadcrumbs } %}
+{% endblock %}
+
+{% block header %}
+    {% include '@ibexadesign/ui/page_title.html.twig' with {
+        title: title,
+    } %}
+{% endblock %}
+
+{% block page_content %}
+<div class="ibexa-container haeretici-settings pb-5">
+    <p class="text-body-secondary mb-4">Configure rate limiting, challenges, bot validation, and path rules.</p>
+
+    {{ form_start(form, { attr: { class: 'haeretici-settings-form needs-validation', novalidate: 'novalidate' } }) }}
+
+    {% if not form.vars.valid and form.vars.submitted %}
+        <div class="alert alert-danger mb-4" role="alert">
+            <strong>Could not save settings.</strong>
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <div class="row g-4">
+        {# Rate limiting #}
+        <div class="col-xl-6">
+            <div class="card shadow-sm h-100 border-0">
+                <div class="card-header bg-body-secondary border-0 py-3">
+                    <div class="d-flex flex-wrap align-items-start justify-content-between gap-3">
+                        <div>
+                            <h2 class="h5 mb-1 d-flex align-items-center gap-2">
+                                <span class="badge text-bg-primary">1</span>
+                                Rate limiting
+                            </h2>
+                            <p class="text-body-secondary small mb-0">Throttle repeated requests and temporarily ban abusive IPs.</p>
+                        </div>
+                        {{ fields.switch(form.enable_rate_limiting) }}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            {{ fields.input_group(form.rate_limiting_window, 'sec', 'Seconds') }}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ fields.input_group(form.rate_limiting_max_requests, 'req', 'Requests per window') }}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ fields.input_group(form.rate_limiting_min_response_time, 'sec', 'Minimum response time') }}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ fields.input_group(form.rate_limiting_ban_duration, 'sec', 'Ban duration') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# JavaScript challenge #}
+        <div class="col-xl-6">
+            <div class="card shadow-sm h-100 border-0">
+                <div class="card-header bg-body-secondary border-0 py-3">
+                    <div class="d-flex flex-wrap align-items-start justify-content-between gap-3">
+                        <div>
+                            <h2 class="h5 mb-1 d-flex align-items-center gap-2">
+                                <span class="badge text-bg-primary">2</span>
+                                JavaScript challenge
+                                <span class="badge text-bg-warning">Beta</span>
+                            </h2>
+                            <p class="text-body-secondary small mb-0">Proof-of-work settings for unverified browser traffic.</p>
+                        </div>
+                        {{ fields.switch(form.challenge_enabled_for_non_bots) }}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            {{ fields.input_group(form.challenge_ttl, 'sec', 'Challenge TTL') }}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ fields.input_group(form.challenge_verified_ttl, 'sec', 'Verified TTL') }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ fields.input_group(form.challenge_secret_length, 'B', 'Secret length in bytes') }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ fields.floating(form.challenge_dummy_ratio) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ fields.floating(form.challenge_dummy_char) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Bot validation #}
+        <div class="col-xl-6">
+            <div class="card shadow-sm h-100 border-0">
+                <div class="card-header bg-body-secondary border-0 py-3">
+                    <h2 class="h5 mb-1 d-flex align-items-center gap-2">
+                        <span class="badge text-bg-primary">3</span>
+                        Bot validation
+                    </h2>
+                    <p class="text-body-secondary small mb-0">Verify crawlers with forward and reverse DNS checks.</p>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {{ fields.bot_switch(form.bots_google_enabled, 'Validate Google crawler IPs via DNS.') }}
+                        {{ fields.bot_switch(form.bots_twitter_enabled, 'Validate Twitter/X crawler IPs via DNS.') }}
+                        {{ fields.bot_switch(form.bots_facebook_enabled, 'Validate Meta crawler IPs via DNS.') }}
+                        {{ fields.bot_switch(form.bots_bing_enabled, 'Validate Bing crawler IPs via DNS.') }}
+                        {{ fields.bot_switch(form.bots_linkedin_enabled, 'Validate LinkedIn crawler IPs via DNS.') }}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        {# Exempt paths #}
+        <div class="col-xl-6">
+            <div class="card shadow-sm h-100 border-0">
+                <div class="card-header bg-body-secondary border-0 py-3">
+                    <h2 class="h5 mb-1 d-flex align-items-center gap-2">
+                        <span class="badge text-bg-primary">4</span>
+                        Exempt paths
+                    </h2>
+                    <p class="text-body-secondary small mb-0">Paths that bypass firewall checks entirely.</p>
+                </div>
+                <div class="card-body">
+                    {{ fields.textarea(form.exemptions_paths, 8) }}
+                    <div class="form-text">
+                        <span class="badge text-bg-light border">fnmatch</span>
+                        One pattern per line. Example: <code>/_fragment*</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Honeypot traps #}
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-body-secondary border-0 py-3">
+                    <div class="d-flex flex-wrap align-items-start justify-content-between gap-3">
+                        <div>
+                            <h2 class="h5 mb-1 d-flex align-items-center gap-2">
+                                <span class="badge text-bg-danger">5</span>
+                                Honeypot traps
+                            </h2>
+                            <p class="text-body-secondary small mb-0">Instantly ban scanners probing common exploit endpoints.</p>
+                        </div>
+                        {{ fields.switch(form.honeypot_enabled) }}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-lg-4">
+                            {{ fields.input_group(form.honeypot_ban_duration, 'sec', 'Trap ban duration') }}
+                        </div>
+                        <div class="col-lg-8">
+                            {{ fields.textarea(form.honeypot_paths, 10) }}
+                            <div class="form-text">
+                                <span class="badge text-bg-light border">fnmatch</span>
+                                One pattern per line. Example: <code>*/wp-admin*</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="haeretici-settings-actions card shadow-sm border-0 mt-4">
+        <div class="card-body py-3">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <span class="text-body-secondary small mb-0">
+                    Changes are saved to the database and cached in Redis.
+                </span>
+                <div class="btn-toolbar gap-2" role="toolbar">
+                    <button type="submit" class="btn btn-primary btn-lg px-4">
+                        Save settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ form_widget(form._token) }}
+    {{ form_end(form, { render_rest: false }) }}
+</div>
+{% endblock %}

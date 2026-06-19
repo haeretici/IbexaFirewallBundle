@@ -1,0 +1,77 @@
+{% macro switch(field, show_help = true) %}
+    {% set invalid_class = field.vars.errors|length > 0 ? ' is-invalid' : '' %}
+    <div class="form-check form-switch mb-0">
+        {{ form_widget(field, {
+            label: false,
+            attr: { class: 'form-check-input' ~ invalid_class, role: 'switch' }
+        }) }}
+        {{ form_label(field, null, { label_attr: { class: 'form-check-label' } }) }}
+    </div>
+    {% if show_help and field.vars.help %}
+        <div class="form-text mt-1">{{ field.vars.help }}</div>
+    {% endif %}
+    {{ form_errors(field) }}
+{% endmacro %}
+
+{% macro input_group(field, unit, unit_title = null) %}
+    {% set invalid_class = field.vars.errors|length > 0 ? ' is-invalid' : '' %}
+    <div class="mb-0">
+        {{ form_label(field, null, { label_attr: { class: 'form-label' } }) }}
+        <div class="input-group">
+            {{ form_widget(field, { attr: { class: 'form-control' ~ invalid_class } }) }}
+            <span class="input-group-text"{% if unit_title %} title="{{ unit_title }}"{% endif %}>{{ unit }}</span>
+        </div>
+        {{ form_help(field) }}
+        {{ form_errors(field) }}
+    </div>
+{% endmacro %}
+
+{% macro floating(field) %}
+    {% set invalid_class = field.vars.errors|length > 0 ? ' is-invalid' : '' %}
+    <div class="form-floating mb-0">
+        {{ form_widget(field, {
+            attr: {
+                class: 'form-control' ~ invalid_class,
+                placeholder: field.vars.label
+            }
+        }) }}
+        {{ form_label(field) }}
+    </div>
+    {{ form_help(field) }}
+    {{ form_errors(field) }}
+{% endmacro %}
+
+{% macro textarea(field, rows = 8) %}
+    {% set invalid_class = field.vars.errors|length > 0 ? ' is-invalid' : '' %}
+    <div class="mb-0">
+        {{ form_label(field, null, { label_attr: { class: 'form-label' } }) }}
+        {{ form_widget(field, {
+            attr: {
+                class: 'form-control font-monospace haeretici-settings-paths' ~ invalid_class,
+                rows: rows,
+                spellcheck: 'false'
+            }
+        }) }}
+        {{ form_help(field) }}
+        {{ form_errors(field) }}
+    </div>
+{% endmacro %}
+
+{% macro bot_switch(field, description) %}
+    {% set invalid_class = field.vars.errors|length > 0 ? ' is-invalid' : '' %}
+    <li class="list-group-item d-flex justify-content-between align-items-center gap-3 py-3">
+        <div class="me-auto">
+            <span class="fw-semibold">{{ field.vars.label }}</span>
+            {% if description %}
+                <small class="text-body-secondary d-block">{{ description }}</small>
+            {% endif %}
+            {{ form_errors(field) }}
+        </div>
+        <div class="form-check form-switch mb-0 flex-shrink-0">
+            {{ form_widget(field, {
+                label: false,
+                attr: { class: 'form-check-input' ~ invalid_class, role: 'switch' }
+            }) }}
+        </div>
+    </li>
+{% endmacro %}

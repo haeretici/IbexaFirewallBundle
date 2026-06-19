@@ -1,0 +1,22 @@
+{% extends '@ibexadesign/ui/layout.html.twig' %}
+
+{% block body_class %}haeretici-firewall{% endblock %}
+
+{% block title %}{{ title|default('Firewall')|trans }}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('haeretici-admin', null, 'ibexa') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('haeretici-admin', null, 'ibexa') }}
+{% endblock %}
+
+{% block content %}
+    {% block page_content %}{% endblock %}
+    <script>
+        window.haeretici_root = "{{ path('haeretici_firewall.dashboard')|replace({"/haeretici_firewall": ""}) }}";
+    </script>
+{% endblock %}

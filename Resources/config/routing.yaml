@@ -1,0 +1,23 @@
+haeretici_firewall.dashboard:
+    path: /haeretici_firewall
+    defaults:
+        _controller: Haeretici\FirewallBundle\Controller\AdminController::dashboardAction
+    options:
+        expose: true
+
+haeretici_firewall.metrics:
+    path: /haeretici_firewall/metrics
+    defaults:
+        _controller: Haeretici\FirewallBundle\Controller\AdminController::getMetricsAction
+    options:
+        expose: true
+    requirements:
+        _method: GET
+
+haeretici_firewall.settings:
+    path: /haeretici_firewall/settings
+    defaults:
+        _controller: Haeretici\FirewallBundle\Controller\AdminController::settingsAction
+    options:
+        expose: true
+

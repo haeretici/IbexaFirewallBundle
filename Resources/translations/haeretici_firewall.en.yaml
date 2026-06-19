@@ -1,0 +1,3 @@
+settings.update.success: 'Settings saved successfully. Some changes may require a page reload or server restart to take effect.'
+settings.update.error: 'Settings could not be saved. Please try again.'
+settings.update.validation_error: 'Could not save settings: %details%'

@@ -1,0 +1,2 @@
+haeretici_firewall:
+    resource: '@HaereticiFirewallBundle/Resources/config/routing.yaml'
